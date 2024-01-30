@@ -1,0 +1,43 @@
+#!/bin/bash
+
+OPTSTRING=":p:s:o:"
+unset -v project
+unset -v stack
+unset -v options
+
+while getopts ${OPTSTRING} opt; do
+  case ${opt} in
+    p)
+      #echo "Option -p was triggered, Argument: ${OPTARG}"
+      project=${OPTARG}
+      cd ${OPTARG}
+      ;;
+    s)
+      #echo "Option -s was triggered, run: pulumi stack select ${OPTARG}"
+      stack=${OPTARG}
+      pulumi stack select ${OPTARG}
+      ;;
+    o)
+      #echo "Option -o was triggered, run: pulumi ${OPTARG}"
+      options=${OPTARG}
+      pulumi ${OPTARG}
+      ;;
+    :)
+      echo "Option -${OPTARG} requires an argument."
+      echo "Usage: pulumi-orch -s <stack> -p <all/networkstack/computestack> -o <all pulumi args>"
+      exit 1
+      ;;
+    ?)
+      echo "Invalid option: -${OPTARG}."
+      echo "Usage: pulumi-orch -s <stack> -p <all/networkstack/computestack> -o <all pulumi args>"
+      exit 1
+      ;;
+  esac
+done
+shift "$(( OPTIND - 1 ))"
+
+if [ -z "$project" ] || [ -z "$stack" ] || [ -z "$options" ]; then
+        echo 'Missing either of the flags -p or -s or -o' >&2
+        exit 1
+fi
+

@@ -1,0 +1,4 @@
+encryptionsalt: v1:JKO+FyomSWY=:v1:kqBkEfJKEFxH04LY:WNDGOFq0YeNIHYM8j2qWYRmB8r3aAw==
+config:
+  aws:region: us-east-1
+  name: cc-pulumi-poc

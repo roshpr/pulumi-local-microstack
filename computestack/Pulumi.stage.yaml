@@ -1,0 +1,6 @@
+encryptionsalt: v1:sDcxlPvwJEE=:v1:0QuGvaS+sUPI1iQE:KASJU+mwYS8e4yTcgSLn0TJ5vYnMyw==
+config:
+  aws:region: us-west-2
+  computestack:instancetype: t3.small
+  computestack:key_name: roshpr_cn2
+  computestack:name: cc-pulumi-poc

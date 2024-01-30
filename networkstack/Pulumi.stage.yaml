@@ -1,0 +1,5 @@
+encryptionsalt: v1:K8AMhLUAwk4=:v1:/4XgHjv3o29pTEiE:+M+9ybgi9F/I8wjTj88kbUbKfC7PCw==
+config:
+  aws:region: us-west-2
+  networkstack:cidr: "20.0.0.0/16"
+  networkstack:name: cc-pulumi-poc
