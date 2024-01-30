@@ -4,32 +4,55 @@ OPTSTRING=":p:s:o:"
 unset -v project
 unset -v stack
 unset -v options
+source ./project.conf
 
 while getopts ${OPTSTRING} opt; do
   case ${opt} in
     p)
       #echo "Option -p was triggered, Argument: ${OPTARG}"
       project=${OPTARG}
-      cd ${OPTARG}
+      if [ $project == "all" ];then
+        echo
+      else
+        cd ${OPTARG}
+      fi
       ;;
     s)
-      #echo "Option -s was triggered, run: pulumi stack select ${OPTARG}"
       stack=${OPTARG}
-      pulumi stack select ${OPTARG}
+      if [ $project == "all" ];then
+          for prj in $projects
+          do
+            cd $prj
+            pulumi stack select ${OPTARG}
+            cd ..
+          done
+      else
+        pulumi stack select ${OPTARG}
+      fi
       ;;
     o)
       #echo "Option -o was triggered, run: pulumi ${OPTARG}"
       options=${OPTARG}
-      pulumi ${OPTARG}
+      if [ "$project" == "all" ];then
+          for prj in $projects
+          do
+            echo "Project: $prj"
+            cd $prj
+            pulumi $options
+            cd ..
+          done
+      else
+          pulumi $options
+      fi
       ;;
     :)
       echo "Option -${OPTARG} requires an argument."
-      echo "Usage: pulumi-orch -s <stack> -p <all/networkstack/computestack> -o <all pulumi args>"
+      echo "Usage: pulumi-orch -p <$projects> -s <$stacks>  -o <pulumi args>"
       exit 1
       ;;
     ?)
       echo "Invalid option: -${OPTARG}."
-      echo "Usage: pulumi-orch -s <stack> -p <all/networkstack/computestack> -o <all pulumi args>"
+      echo "Usage: pulumi-orch -p <$projects> -s <$stacks>  -o <pulumi args>"
       exit 1
       ;;
   esac
